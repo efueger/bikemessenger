@@ -1,0 +1,7 @@
+service:
+    image: postgres
+    ports:
+        - "8660:80"
+        - "443:443"
+    env:
+        - DEBUG=1
