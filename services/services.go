@@ -1,12 +1,29 @@
-package main
+package services
 
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
+
+	"github.com/delivercodes/bikemessenger/models"
+	yaml "gopkg.in/yaml.v2"
 )
+
+func readfile(file string) models.Config {
+	t := models.Config{}
+	dat, err := ioutil.ReadFile(file)
+	if err != nil {
+		panic(err)
+	}
+	ymlerr := yaml.Unmarshal([]byte(dat), &t)
+	if ymlerr != nil {
+		log.Fatalf("error: %v", err)
+	}
+	return t
+}
 
 func execService(cmdName string, cmdArgs []string) {
 	cmd := exec.Command(cmdName, cmdArgs...)
@@ -73,7 +90,8 @@ func runService() {
 	log.Printf("Starting Docker instance on pid %d\n", cmd.Process.Pid)
 }
 
-func pullService() {
+//PullService ...
+func PullService() {
 	config := readfile("data.yml")
 	image := config.Service.Image
 	args := []string{"pull", image}
@@ -86,7 +104,8 @@ func pullService() {
 	runService()
 }
 
-func checkService() []byte {
+//CheckService ...
+func CheckService() []byte {
 	args := []string{"--unix-socket", "/var/run/docker.sock", "http://localhost/containers/json"}
 	out, err := exec.Command("curl", args...).Output()
 	if err != nil {

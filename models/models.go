@@ -1,4 +1,4 @@
-package main
+package models
 
 //Config ...
 type Config struct {
