@@ -3,27 +3,12 @@ package services
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 
-	"github.com/delivercodes/bikemessenger/models"
-	yaml "gopkg.in/yaml.v2"
+	"github.com/delivercodes/bikemessenger/utils"
 )
-
-func readfile(file string) models.Config {
-	t := models.Config{}
-	dat, err := ioutil.ReadFile(file)
-	if err != nil {
-		panic(err)
-	}
-	ymlerr := yaml.Unmarshal([]byte(dat), &t)
-	if ymlerr != nil {
-		log.Fatalf("error: %v", err)
-	}
-	return t
-}
 
 func execService(cmdName string, cmdArgs []string) {
 	cmd := exec.Command(cmdName, cmdArgs...)
@@ -76,9 +61,12 @@ func execService(cmdName string, cmdArgs []string) {
 // }
 
 func runService() {
-	config := readfile("data.yml")
+	config := utils.Readfile("data.yml")
 	image := config.Service.Image
-	name := "--name=fuck"
+
+	killService(image)
+
+	name := "--name=" + image
 	args := []string{"run", name, image}
 
 	cmd := exec.Command("docker", args...)
@@ -92,7 +80,7 @@ func runService() {
 
 //PullService ...
 func PullService() {
-	config := readfile("data.yml")
+	config := utils.Readfile("data.yml")
 	image := config.Service.Image
 	args := []string{"pull", image}
 	out, err := exec.Command("docker", args...).Output()
@@ -111,5 +99,25 @@ func CheckService() []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
+	return out
+}
+
+func killService(container string) (serviceOut []byte, serviceErr error) {
+	killArgs := []string{"kill", container}
+	rmArgs := []string{"rm", container}
+	out, err := exec.Command("docker", killArgs...).Output()
+	if out != nil {
+		exec.Command("docker", rmArgs...).Run()
+	}
+	return out, err
+}
+
+//RestartService restarts the service .. holy shit dude
+func RestartService(container string) []byte {
+	out, err := killService(container)
+	if err != nil {
+		log.Fatal(err)
+	}
+	PullService()
 	return out
 }

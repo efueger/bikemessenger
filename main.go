@@ -11,7 +11,8 @@ import (
 func main() {
 	http.HandleFunc("/", routes.CheckRoute)
 	http.HandleFunc("/health", routes.HealthRoute)
+	http.HandleFunc("/restart", routes.RestartRoute)
 	services.PullService()
-	log.Fatal(http.ListenAndServe(":9000", nil))
+	log.Fatal(http.ListenAndServe(":4000", nil))
 
 }
