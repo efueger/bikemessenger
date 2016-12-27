@@ -38,28 +38,6 @@ func execService(cmdName string, cmdArgs []string) {
 	}
 }
 
-//
-// func runService() {
-//
-// 	config := readfile("data.yml")
-// 	image := config.Service.Image
-// 	ports := ""
-// 	envs := ""
-// 	for _, port := range config.Service.Ports {
-// 		ports += " -p " + port
-// 	}
-// 	for _, env := range config.Service.Env {
-// 		envs += " -e " + env
-// 	}
-// 	pull := []string{"pull", image}
-// 	run := []string{"run", image}
-//
-// 	execService("docker", run)
-// 	execService("docker", pull)
-// 	// fmt.Fprintf(w, "docker pull %v \n\n", image)
-// 	// fmt.Fprintf(w, "docker run %v%v%v", image, ports, envs)
-// }
-
 func runService() {
 	config := utils.Readfile("data.yml")
 	image := config.Service.Image
