@@ -66,7 +66,7 @@ func KillService(container string) ([]byte, error) {
 //RestartService restarts the service .. holy shit dude
 func RestartService(container string) *exec.Cmd {
 	out, err := KillService(container)
-	fmt.Println(out)
+	fmt.Printf("Restarting Service %s", out)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
