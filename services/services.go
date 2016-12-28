@@ -42,7 +42,7 @@ func runService() {
 	config := utils.Readfile("data.yml")
 	image := config.Service.Image
 
-	killService(image)
+	KillService(image)
 
 	name := "--name=" + image
 	args := []string{"run", name, image}
@@ -80,7 +80,8 @@ func CheckService() []byte {
 	return out
 }
 
-func killService(container string) (serviceOut []byte, serviceErr error) {
+//KillService kills a docker service, it takes the id of the container to kill
+func KillService(container string) (serviceOut []byte, serviceErr error) {
 	killArgs := []string{"kill", container}
 	rmArgs := []string{"rm", container}
 	out, err := exec.Command("docker", killArgs...).Output()
@@ -92,7 +93,7 @@ func killService(container string) (serviceOut []byte, serviceErr error) {
 
 //RestartService restarts the service .. holy shit dude
 func RestartService(container string) []byte {
-	out, err := killService(container)
+	out, err := KillService(container)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -12,7 +12,9 @@ func main() {
 	http.HandleFunc("/", routes.CheckRoute)
 	http.HandleFunc("/health", routes.HealthRoute)
 	http.HandleFunc("/restart", routes.RestartRoute)
-	services.PullService()
-	log.Fatal(http.ListenAndServe(":4000", nil))
+	http.HandleFunc("/kill", routes.KillRoute)
 
+	services.PullService()
+
+	log.Fatal(http.ListenAndServe(":4000", nil))
 }
