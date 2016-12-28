@@ -1,7 +1,6 @@
 package services
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -10,35 +9,8 @@ import (
 	"github.com/delivercodes/bikemessenger/utils"
 )
 
-func execService(cmdName string, cmdArgs []string) {
-	cmd := exec.Command(cmdName, cmdArgs...)
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error creating StdoutPipe for Cmd", err)
-		os.Exit(1)
-	}
-
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			fmt.Printf("%s\n", scanner.Text())
-		}
-	}()
-
-	err = cmd.Start()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
-		os.Exit(1)
-	}
-
-	err = cmd.Wait()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
-		os.Exit(1)
-	}
-}
-
-func runService() {
+//RunService runs the docker image and outputs the cmd
+func RunService() *exec.Cmd {
 	config := utils.Readfile("data.yml")
 	image := config.Service.Image
 
@@ -48,12 +20,7 @@ func runService() {
 	args := []string{"run", name, image}
 
 	cmd := exec.Command("docker", args...)
-	cmd.Stdout = os.Stdout
-	err := cmd.Start()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("Starting Docker instance on pid %d\n", cmd.Process.Pid)
+	return cmd
 }
 
 //PullService ...
@@ -67,21 +34,26 @@ func PullService() {
 		os.Exit(1)
 	}
 	fmt.Printf("%s", out)
-	runService()
+	KillService(image)
+	cmd := RunService()
+	cmd.Stdout = os.Stdout
+	runErr := cmd.Start()
+	if runErr != nil {
+		log.Fatal(runErr)
+		os.Exit(1)
+	}
+
 }
 
 //CheckService ...
-func CheckService() []byte {
+func CheckService() ([]byte, error) {
 	args := []string{"--unix-socket", "/var/run/docker.sock", "http://localhost/containers/json"}
 	out, err := exec.Command("curl", args...).Output()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return out
+	return out, err
 }
 
 //KillService kills a docker service, it takes the id of the container to kill
-func KillService(container string) (serviceOut []byte, serviceErr error) {
+func KillService(container string) ([]byte, error) {
 	killArgs := []string{"kill", container}
 	rmArgs := []string{"rm", container}
 	out, err := exec.Command("docker", killArgs...).Output()
@@ -92,11 +64,13 @@ func KillService(container string) (serviceOut []byte, serviceErr error) {
 }
 
 //RestartService restarts the service .. holy shit dude
-func RestartService(container string) []byte {
+func RestartService(container string) *exec.Cmd {
 	out, err := KillService(container)
+	fmt.Println(out)
 	if err != nil {
 		log.Fatal(err)
+		os.Exit(1)
 	}
-	PullService()
-	return out
+	cmd := RunService()
+	return cmd
 }
