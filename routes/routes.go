@@ -1,11 +1,14 @@
 package routes
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
+	"github.com/delivercodes/bikemessenger/models"
 	"github.com/delivercodes/bikemessenger/services"
+	"github.com/delivercodes/bikemessenger/utils"
 )
 
 type flushWriter struct {
@@ -55,4 +58,29 @@ func KillRoute(w http.ResponseWriter, r *http.Request) {
 
 	}
 	fmt.Fprintf(w, "%s", out)
+}
+
+//Config is a get request to get the config
+func Config(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		getConfig(w, r)
+	} else if r.Method == "POST" {
+		postConfig(w, r)
+	}
+}
+
+func getConfig(w http.ResponseWriter, r *http.Request) {
+	json := utils.LoadConfigToJSON()
+	fmt.Fprintf(w, "%s", json)
+}
+
+func postConfig(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+	var config models.Config
+	err := decoder.Decode(&config)
+	if err != nil {
+		panic(err)
+	}
+	defer r.Body.Close()
+	fmt.Fprintf(w, "%s", config)
 }

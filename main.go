@@ -13,6 +13,8 @@ func main() {
 	http.HandleFunc("/health", routes.HealthRoute)
 	http.HandleFunc("/restart", routes.RestartRoute)
 	http.HandleFunc("/kill", routes.KillRoute)
+	//Config
+	http.HandleFunc("/config", routes.Config)
 
 	services.PullService()
 

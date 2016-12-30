@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -8,8 +9,8 @@ import (
 	"github.com/ghodss/yaml"
 )
 
-//Readfile ...
-func Readfile(file string) models.Config {
+//LoadConfigToModel loads config and returns model
+func LoadConfigToModel(file string) models.Config {
 	t := models.Config{}
 	dat, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -20,4 +21,20 @@ func Readfile(file string) models.Config {
 		log.Fatalf("error loading yaml to model: %v", err)
 	}
 	return t
+}
+
+//LoadConfigToJSON gets the config model and returns json
+func LoadConfigToJSON() []byte {
+	config := LoadConfigToModel("data.yml")
+	y, err := yaml.Marshal(config)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		panic(err)
+	}
+	j2, err := yaml.YAMLToJSON(y)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		panic(err)
+	}
+	return j2
 }

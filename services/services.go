@@ -11,7 +11,7 @@ import (
 
 //RunService runs the docker image and outputs the cmd
 func RunService() *exec.Cmd {
-	config := utils.Readfile("data.yml")
+	config := utils.LoadConfigToModel("data.yml")
 	image := config.Service.Image
 
 	KillService(image)
@@ -25,7 +25,7 @@ func RunService() *exec.Cmd {
 
 //PullService ...
 func PullService() {
-	config := utils.Readfile("data.yml")
+	config := utils.LoadConfigToModel("data.yml")
 	image := config.Service.Image
 	args := []string{"pull", image}
 	out, err := exec.Command("docker", args...).Output()
