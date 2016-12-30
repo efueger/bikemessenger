@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/delivercodes/bikemessenger/models"
-	yaml "gopkg.in/yaml.v2"
+	"github.com/ghodss/yaml"
 )
 
 //Readfile ...
