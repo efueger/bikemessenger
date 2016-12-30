@@ -17,7 +17,7 @@ func RunService() *exec.Cmd {
 	KillService(image)
 
 	name := "--name=" + image
-	args := []string{"run", name, image}
+	args := []string{"run", "-d", name, image}
 
 	cmd := exec.Command("docker", args...)
 	return cmd
@@ -36,7 +36,7 @@ func PullService() {
 	fmt.Printf("%s", out)
 	KillService(image)
 	cmd := RunService()
-	cmd.Stdout = os.Stdout
+	// cmd.Stdout = os.Stdout
 	runErr := cmd.Start()
 	if runErr != nil {
 		log.Fatal(runErr)

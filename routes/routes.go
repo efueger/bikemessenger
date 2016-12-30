@@ -38,14 +38,14 @@ func CheckRoute(w http.ResponseWriter, r *http.Request) {
 
 //RestartRoute restarts the docker service
 func RestartRoute(w http.ResponseWriter, r *http.Request) {
-	fw := flushWriter{w: w}
-	if f, ok := w.(http.Flusher); ok {
-		fw.f = f
+
+	services.RestartService(r.URL.Query().Get("id")).Run()
+
+	out, err := services.CheckService()
+	if err != nil {
+		fmt.Fprintf(w, "%s", err)
 	}
-	cmd := services.RestartService(r.URL.Query().Get("id"))
-	cmd.Stdout = &fw
-	cmd.Stderr = &fw
-	cmd.Run()
+	fmt.Fprintf(w, "%s", out)
 }
 
 //KillRoute kills the docker route
