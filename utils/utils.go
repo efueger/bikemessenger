@@ -38,3 +38,22 @@ func LoadConfigToJSON() []byte {
 	}
 	return j2
 }
+
+//SaveConfigToFile takes Config and saves it to the data.yml file
+func SaveConfigToFile(config models.Config) []byte {
+	y, err := yaml.Marshal(config)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		return nil
+	}
+	errs := ioutil.WriteFile("data.yml", y, 0644)
+	if errs != nil {
+		return nil
+	}
+	j, err := yaml.YAMLToJSON(y)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+		panic(err)
+	}
+	return j
+}

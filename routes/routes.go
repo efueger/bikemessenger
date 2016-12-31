@@ -75,12 +75,17 @@ func getConfig(w http.ResponseWriter, r *http.Request) {
 }
 
 func postConfig(w http.ResponseWriter, r *http.Request) {
-	decoder := json.NewDecoder(r.Body)
+	if r.Body == nil {
+		http.Error(w, "Please send a request body", 400)
+		return
+	}
+
 	var config models.Config
-	err := decoder.Decode(&config)
+	err := json.NewDecoder(r.Body).Decode(&config)
 	if err != nil {
 		panic(err)
 	}
 	defer r.Body.Close()
-	fmt.Fprintf(w, "%s", config)
+	json := utils.SaveConfigToFile(config)
+	fmt.Fprintf(w, "%s", json)
 }
