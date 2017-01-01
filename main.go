@@ -11,12 +11,14 @@ import (
 func main() {
 	http.HandleFunc("/", routes.CheckRoute)
 	http.HandleFunc("/health", routes.HealthRoute)
+
+	//Status
 	http.HandleFunc("/restart", routes.RestartRoute)
 	http.HandleFunc("/kill", routes.KillRoute)
+
 	//Config
 	http.HandleFunc("/config", routes.Config)
 
 	services.PullService()
-
 	log.Fatal(http.ListenAndServe(":4000", nil))
 }
