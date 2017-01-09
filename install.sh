@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-FILE="test.service"
+FILE="bikemessenger.service"
+
+curl -O "https://github.com/delivercodes/bikemessenger/releases/download/v0.1.0/bikemessenger"
+chmod u+x bikemessenger
 
 cat > $FILE <<- EOM
 [Unit]
