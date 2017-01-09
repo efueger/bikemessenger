@@ -14,7 +14,10 @@ func LoadConfigToModel(file string) models.Config {
 	t := models.Config{}
 	dat, err := ioutil.ReadFile(file)
 	if err != nil {
-		panic(err)
+		errs := ioutil.WriteFile(file, []byte(""), 0644)
+		if errs != nil {
+			panic(errs)
+		}
 	}
 	ymlerr := yaml.Unmarshal([]byte(dat), &t)
 	if ymlerr != nil {
@@ -26,7 +29,7 @@ func LoadConfigToModel(file string) models.Config {
 
 //LoadConfigToJSON gets the config model and returns json
 func LoadConfigToJSON() []byte {
-	config := LoadConfigToModel("data.yml")
+	config := LoadConfigToModel(models.ConfigFile())
 	y, err := yaml.Marshal(config)
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
@@ -47,7 +50,7 @@ func SaveConfigToFile(config models.Config) []byte {
 		fmt.Printf("err: %v\n", err)
 		return nil
 	}
-	errs := ioutil.WriteFile("data.yml", y, 0644)
+	errs := ioutil.WriteFile(models.ConfigFile(), y, 0644)
 	if errs != nil {
 		return nil
 	}

@@ -24,7 +24,7 @@ func RunService(service models.Service, name string) *exec.Cmd {
 
 //PullService ...
 func PullService() {
-	config := utils.LoadConfigToModel("data.yml")
+	config := utils.LoadConfigToModel(models.ConfigFile())
 	for k := range config.Service {
 		service := config.Service[k]
 
@@ -66,7 +66,7 @@ func KillService(container string) ([]byte, error) {
 
 //RestartService restarts the service .. holy shit dude
 func RestartService(container string) *exec.Cmd {
-	config := utils.LoadConfigToModel("data.yml")
+	config := utils.LoadConfigToModel(models.ConfigFile())
 	out, err := KillService(container)
 	fmt.Printf("Restarting Service %s", out)
 	if err != nil {
