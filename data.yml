@@ -1,7 +1,13 @@
-service:
-  env:
-  - DEBUG=2
-  image: postgres
-  ports:
-  - 8660:80
-  - 443:443
+services:
+    postgres:
+        env:
+            - DEBUG=2
+        image: postgres
+        ports:
+            - 8660:80
+            - 443:443
+    cherubini_casa:
+        image: home.cherubini.casa:5000/nginx:68
+        ports:
+            - 9000:80
+            - 9443:443

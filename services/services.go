@@ -6,18 +6,17 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/delivercodes/bikemessenger/models"
 	"github.com/delivercodes/bikemessenger/utils"
 )
 
 //RunService runs the docker image and outputs the cmd
-func RunService() *exec.Cmd {
-	config := utils.LoadConfigToModel("data.yml")
-	image := config.Service.Image
-
+func RunService(service models.Service, name string) *exec.Cmd {
+	image := service.Image
 	KillService(image)
 
-	name := "--name=" + image
-	args := []string{"run", "-d", name, image}
+	nameString := "--name=" + name
+	args := []string{"run", "-d", nameString, image}
 
 	cmd := exec.Command("docker", args...)
 	return cmd
@@ -26,21 +25,23 @@ func RunService() *exec.Cmd {
 //PullService ...
 func PullService() {
 	config := utils.LoadConfigToModel("data.yml")
-	image := config.Service.Image
-	args := []string{"pull", image}
-	out, err := exec.Command("docker", args...).Output()
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-	fmt.Printf("%s", out)
-	KillService(image)
-	cmd := RunService()
-	// cmd.Stdout = os.Stdout
-	runErr := cmd.Start()
-	if runErr != nil {
-		log.Fatal(runErr)
-		os.Exit(1)
+	for k := range config.Service {
+		service := config.Service[k]
+
+		args := []string{"pull", service.Image}
+		out, err := exec.Command("docker", args...).Output()
+		if err != nil {
+			log.Fatal(err)
+			os.Exit(1)
+		}
+		fmt.Printf("%s", out)
+		KillService(service.Image)
+		cmd := RunService(service, k)
+		runErr := cmd.Start()
+		if runErr != nil {
+			log.Fatal(runErr)
+			os.Exit(1)
+		}
 	}
 
 }
@@ -65,12 +66,13 @@ func KillService(container string) ([]byte, error) {
 
 //RestartService restarts the service .. holy shit dude
 func RestartService(container string) *exec.Cmd {
+	config := utils.LoadConfigToModel("data.yml")
 	out, err := KillService(container)
 	fmt.Printf("Restarting Service %s", out)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(1)
 	}
-	cmd := RunService()
+	cmd := RunService(config.Service[container], container)
 	return cmd
 }

@@ -2,10 +2,11 @@ package models
 
 //Config struct is the object that comes from the yaml file
 type Config struct {
-	Service service `json:"service"`
+	Service map[string]Service `json:"services"`
 }
 
-type service struct {
+//Service ldfdf
+type Service struct {
 	Image string   `json:"image"`
 	Ports []string `json:"ports"`
 	Env   []string `json:"env"`

@@ -20,6 +20,7 @@ func LoadConfigToModel(file string) models.Config {
 	if ymlerr != nil {
 		log.Fatalf("error loading yaml to model: %v", err)
 	}
+
 	return t
 }
 
