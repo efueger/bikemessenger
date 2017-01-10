@@ -54,7 +54,24 @@ func TestCheckRoute(t *testing.T) {
 
 //RestartRoute restarts the docker service
 func TestRestartRoute(t *testing.T) {
-	req, err := http.NewRequest("POST", "/restart", nil)
+	req, err := http.NewRequest("GET", "/restart?id=postgres", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(routes.RestartRoute)
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
+	}
+}
+
+//RestartRoute restarts the docker service
+func TestRestartAllRoute(t *testing.T) {
+	req, err := http.NewRequest("GET", "/restart", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
