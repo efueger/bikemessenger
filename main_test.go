@@ -2,9 +2,8 @@ package main
 
 import "testing"
 
-func TestServer(t *testing.T) {
-	r := Router()
-	srv := Server(r)
+func TestSetup(t *testing.T) {
+	srv := Setup()
 	if srv == nil {
 		t.Fail()
 	}

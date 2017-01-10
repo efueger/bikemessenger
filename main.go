@@ -37,13 +37,17 @@ func Server(r *mux.Router) *http.Server {
 	return srv
 }
 
-func main() {
-
+//Setup sets server up for logfatal
+func Setup() *http.Server {
 	r := Router()
 
 	http.Handle("/", r)
 
 	services.PullService()
 	srv := Server(r)
-	log.Fatal(srv.ListenAndServe())
+	return srv
+}
+
+func main() {
+	log.Fatal(Setup().ListenAndServe())
 }
