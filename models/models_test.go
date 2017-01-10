@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/delivercodes/bikemessenger/models"
@@ -39,7 +40,7 @@ func TestConfig(t *testing.T) {
 
 func TestConfigFile(t *testing.T) {
 	config := models.ConfigFile()
-	if config != "/Users/danielcherubini/.bikemessenger.yml" {
-		t.Errorf("Config Model File Location Error", config)
+	if !strings.Contains(config, "/.bikemessenger.yml") {
+		t.Errorf("Config Model File Location Error ", config)
 	}
 }
