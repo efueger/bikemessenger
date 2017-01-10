@@ -2,7 +2,7 @@ language: go
 go:
 - 1.7.x
 
-script: ls
+script: go build && ls
 
 deploy:
   provider: releases
