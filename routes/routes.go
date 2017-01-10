@@ -70,7 +70,7 @@ func Config(w http.ResponseWriter, r *http.Request) {
 }
 
 func getConfig(w http.ResponseWriter, r *http.Request) {
-	json, _ := utils.LoadConfigToJSON()
+	json, _ := utils.LoadConfigToJSON(models.ConfigFile())
 	fmt.Fprintf(w, "%s", json)
 }
 
