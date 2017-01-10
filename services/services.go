@@ -18,14 +18,14 @@ func RunService(service models.Service, name string) *exec.Cmd {
 	var envs bytes.Buffer
 	KillService(image)
 
-	nameString := "--name=" + name
+	nameString := "--name \"" + name + "\""
 	args := []string{"run", nameString}
 
 	if service.Ports != nil {
 		for i, port := range service.Ports {
-			start := "-e \""
+			start := "-p \""
 			if i > 0 {
-				start = " -e \""
+				start = " -p \""
 			}
 			ports.WriteString(start + port + "\"")
 		}
