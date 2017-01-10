@@ -1,7 +1,6 @@
 package services
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -14,38 +13,30 @@ import (
 //RunService runs the docker image and outputs the cmd
 func RunService(service models.Service, name string) *exec.Cmd {
 	image := service.Image
-	var ports bytes.Buffer
-	var envs bytes.Buffer
+	args := []string{"run"}
 	KillService(image)
 
-	nameString := "--name \"" + name + "\""
-	args := []string{"run", nameString}
-
+	nameString := "--name=" + name
+	args = append(args, nameString)
+	//
 	if service.Ports != nil {
-		for i, port := range service.Ports {
-			start := "-p \""
-			if i > 0 {
-				start = " -p \""
-			}
-			ports.WriteString(start + port + "\"")
+		for _, port := range service.Ports {
+			start := "-p"
+			out := start + port
+			args = append(args, out)
 		}
-		args = append(args, ports.String())
 	}
 
 	if service.Env != nil {
-		for i, env := range service.Env {
-			start := "-e \""
-			if i > 0 {
-				start = " -e \""
-			}
-			envs.WriteString(start + env + "\"")
+		for _, env := range service.Env {
+			out := "-e" + env
+			args = append(args, out)
 		}
-		args = append(args, envs.String())
 	}
 
 	args = append(args, image)
-	fmt.Println(args)
 	cmd := exec.Command("docker", args...)
+	fmt.Println(args)
 	return cmd
 }
 
@@ -63,12 +54,11 @@ func PullService() {
 		}
 		fmt.Printf("%s", out)
 		KillService(service.Image)
-		cmd := RunService(service, k)
-		runErr := cmd.Start()
+		outs, runErr := RunService(service, k).Output()
 		if runErr != nil {
-			log.Fatal(runErr)
-			os.Exit(1)
+			fmt.Printf("%s", outs)
 		}
+		fmt.Printf("%s", outs)
 	}
 
 }

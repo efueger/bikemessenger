@@ -5,9 +5,9 @@ services:
         image: postgres
         ports:
             - 8660:80
-            - 443:443
+            - 7443:443
     cherubini_casa:
-        image: docker.cherubini.casa/cherubini_nginx:2
+        image: docker.cherubini.casa/cherubini_nginx:3
         ports:
             - 9000:80
             - 9443:443
