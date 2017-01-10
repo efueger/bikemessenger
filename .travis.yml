@@ -1,7 +1,9 @@
 language: go
 go:
-- 1.5
 - 1.7.x
+
+install:
+  - "go get -d -v ./..."
 
 deploy:
   provider: releases
@@ -15,3 +17,4 @@ deploy:
   on:
     repo: delivercodes/bikemessenger
     tags: true
+    all_branches: true
