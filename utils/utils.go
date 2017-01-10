@@ -1,63 +1,36 @@
 package utils
 
 import (
-	"fmt"
 	"io/ioutil"
-	"log"
 
 	"github.com/delivercodes/bikemessenger/models"
 	"github.com/ghodss/yaml"
 )
 
 //LoadConfigToModel loads config and returns model
-func LoadConfigToModel(file string) models.Config {
+func LoadConfigToModel(file string) (models.Config, error) {
 	t := models.Config{}
 	dat, err := ioutil.ReadFile(file)
-	if err != nil {
-		errs := ioutil.WriteFile(file, []byte(""), 0644)
-		if errs != nil {
-			panic(errs)
-		}
-	}
-	ymlerr := yaml.Unmarshal([]byte(dat), &t)
-	if ymlerr != nil {
-		log.Fatalf("error loading yaml to model: %v", err)
-	}
+	yaml.Unmarshal([]byte(dat), &t)
 
-	return t
+	return t, err
 }
 
 //LoadConfigToJSON gets the config model and returns json
-func LoadConfigToJSON() []byte {
-	config := LoadConfigToModel(models.ConfigFile())
-	y, err := yaml.Marshal(config)
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-		panic(err)
-	}
-	j2, err := yaml.YAMLToJSON(y)
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-		panic(err)
-	}
-	return j2
+func LoadConfigToJSON() ([]byte, error) {
+	config, err := LoadConfigToModel(models.ConfigFile())
+
+	y, _ := yaml.Marshal(config)
+
+	j2, _ := yaml.YAMLToJSON(y)
+	return j2, err
 }
 
 //SaveConfigToFile takes Config and saves it to the data.yml file
-func SaveConfigToFile(config models.Config) []byte {
+func SaveConfigToFile(config models.Config) ([]byte, error) {
 	y, err := yaml.Marshal(config)
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-		return nil
-	}
-	errs := ioutil.WriteFile(models.ConfigFile(), y, 0644)
-	if errs != nil {
-		return nil
-	}
-	j, err := yaml.YAMLToJSON(y)
-	if err != nil {
-		fmt.Printf("err: %v\n", err)
-		panic(err)
-	}
-	return j
+
+	ioutil.WriteFile(models.ConfigFile(), y, 0644)
+	j, _ := yaml.YAMLToJSON(y)
+	return j, err
 }

@@ -70,7 +70,7 @@ func Config(w http.ResponseWriter, r *http.Request) {
 }
 
 func getConfig(w http.ResponseWriter, r *http.Request) {
-	json := utils.LoadConfigToJSON()
+	json, _ := utils.LoadConfigToJSON()
 	fmt.Fprintf(w, "%s", json)
 }
 
@@ -86,6 +86,6 @@ func postConfig(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer r.Body.Close()
-	json := utils.SaveConfigToFile(config)
+	json, _ := utils.SaveConfigToFile(config)
 	fmt.Fprintf(w, "%s", json)
 }
