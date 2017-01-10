@@ -4,10 +4,9 @@ go:
 - tip
 before_install:
   - go get github.com/mattn/goveralls
+  - go get -d -v ./...
 script:
   - $HOME/gopath/bin/goveralls -service=travis-ci
-install:
-- go get -d -v ./...
 deploy:
   provider: releases
   api_key:
