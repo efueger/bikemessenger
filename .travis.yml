@@ -1,11 +1,11 @@
 language: go
+sudo: false
 go:
 - tip
 before_install:
   - go get github.com/mattn/goveralls
 script:
   - $HOME/gopath/bin/goveralls -service=travis-ci
-  
 install:
 - go get -d -v ./...
 deploy:
@@ -21,6 +21,3 @@ deploy:
     repo: delivercodes/bikemessenger
     tags: true
     all_branches: true
-env:
-  global:
-    secure: MXuhlLNqaqGffqJww6ulqvc40rMlz+8W+iVPdNhzeYvezna9UiZ5EIvdmenYD+RliZytyoikPQ01ItE+aLFTTtzdX1RS8/ifT13Mp41RJHvQH2wtC1x3kiLkzfVTRkXs9WkXA/2pOsCjKcxmVz7msbpEiiuBOPLbkfbrbDF4xVFvet8GG9NGTepNld8hjrwkO2afPw44Ul5qlTDmj0Rg7Ec56tU6L7kjYCDoX5O4cfTR9cihf/VOlw4Agawl4ZKfOJxv6uuT0SAlelsYfRsa8ievLQIv5uHYjqOhZ77BVDs632pAcEv5rU4D3V7kAZuqb1dph4agR9m9Xgq7usr0QMHh/iTJ2Q9rMuBm7TsnqqrLdNFZtP9Fn9F2PbFFfq18pPmngAg2EGI6EPlOTLGJ+If8S25nE6cxk9fe8/egEU71ub6lO/8D3QB4r4T8nhEfPM8U3RU0H6JSfsIJfjCqaGMzwXDzHlrpgwpwTGHtlAlIOgElck8/pQhuRQOaNkLj2qie8BrvPXZkMfs0GHS8yTRxwa47m+gtYf+ddaDkJlDLu8FXXgYSRDoI+l6lseUVwHhl6o25u+TTpozMIW3CDp+3VOKRhllU8BJXgpQatjFRzPkfo+7HTEWJqcJPyRiOJSaD5WkHfuD6wR/hiyoZ/ysHne5dRIMCvZkEMUwbUh0=
