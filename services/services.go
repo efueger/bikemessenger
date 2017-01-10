@@ -54,11 +54,10 @@ func PullService() {
 		}
 		fmt.Printf("%s", out)
 		KillService(service.Image)
-		outs, runErr := RunService(service, k).Output()
+		runErr := RunService(service, k).Start()
 		if runErr != nil {
-			fmt.Printf("%s", outs)
+			fmt.Printf("%s", runErr)
 		}
-		fmt.Printf("%s", outs)
 	}
 
 }
