@@ -1,6 +1,9 @@
 language: go
 go:
 - 1.7.x
+
+script: go build
+
 deploy:
   provider: releases
   api_key:
