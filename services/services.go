@@ -77,7 +77,7 @@ func KillService(container string) ([]byte, error) {
 	if out != nil {
 
 	}
-	exec.Command("docker", rmArgs...).Run()
+	exec.Command("docker", rmArgs...).Start()
 	return out, err
 }
 
