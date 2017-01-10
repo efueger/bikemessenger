@@ -2,7 +2,8 @@
 FILE="/lib/systemd/system/bikemessenger.service"
 
 bikemessengerFile="bikemessenger-linux-amd64"
-curl -sOL "$(jq -r ".assets[] | select(.name | test(\"${bikemessengerFile}\")) | .browser_download_url" < <( curl -s "https://api.github.com/repos/delivercodes/bikemessenger/releases/latest" ))"
+curl -s https://api.github.com/repos/delivercodes/bikemessenger/releases | grep browser_download_url | grep ${bikemessengerFile} | head -n 1 | cut -d '"' -f 4 | wget -i -
+
 
 chmod +x ${bikemessengerFile}
 mv ${bikemessengerFile} bikemessenger
