@@ -19,7 +19,7 @@ func TestLoadConfigToModel(t *testing.T) {
 }
 
 func TestLoadConfigToJSON(t *testing.T) {
-	j, err := utils.LoadConfigToJSON()
+	j, err := utils.LoadConfigToJSON("../data.yml")
 	if err != nil {
 		t.Error("Error JSON didn't load ", j)
 	}

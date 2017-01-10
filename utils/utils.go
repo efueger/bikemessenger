@@ -17,8 +17,8 @@ func LoadConfigToModel(file string) (models.Config, error) {
 }
 
 //LoadConfigToJSON gets the config model and returns json
-func LoadConfigToJSON() ([]byte, error) {
-	config, err := LoadConfigToModel(models.ConfigFile())
+func LoadConfigToJSON(file string) ([]byte, error) {
+	config, err := LoadConfigToModel(file)
 
 	y, _ := yaml.Marshal(config)
 
