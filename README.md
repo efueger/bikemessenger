@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/delivercodes/bikemessenger.svg?branch=master)](https://travis-ci.org/delivercodes/bikemessenger)
-
+[![Build Status](https://travis-ci.org/delivercodes/bikemessenger.svg?branch=master)](https://travis-ci.org/delivercodes/bikemessenger) [![Coverage Status](https://coveralls.io/repos/github/delivercodes/bikemessenger/badge.svg?branch=master)](https://coveralls.io/github/delivercodes/bikemessenger?branch=master)
 # bikemessenger
 I deliver the codes yo!
 
