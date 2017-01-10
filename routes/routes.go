@@ -23,7 +23,8 @@ func CheckRoute(w http.ResponseWriter, r *http.Request) {
 
 //RestartRoute restarts the docker service
 func RestartRoute(w http.ResponseWriter, r *http.Request) {
-	services.RestartService(r.URL.Query().Get("id")).Run()
+	cmd, _ := services.RestartService(r.URL.Query().Get("id"))
+	cmd.Run()
 	out, _ := services.CheckService()
 	fmt.Fprintf(w, "%s", out)
 }

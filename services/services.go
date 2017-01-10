@@ -2,8 +2,6 @@ package services
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"os/exec"
 
 	"github.com/delivercodes/bikemessenger/models"
@@ -47,17 +45,10 @@ func PullService() {
 		service := config.Service[k]
 
 		args := []string{"pull", service.Image}
-		out, err := exec.Command("docker", args...).Output()
-		if err != nil {
-			log.Fatal(err)
-			os.Exit(1)
-		}
+		out, _ := exec.Command("docker", args...).Output()
 		fmt.Printf("%s", out)
 		KillService(service.Image)
-		runErr := RunService(service, k).Start()
-		if runErr != nil {
-			fmt.Printf("%s", runErr)
-		}
+		RunService(service, k).Start()
 	}
 
 }
@@ -82,14 +73,11 @@ func KillService(container string) ([]byte, error) {
 }
 
 //RestartService restarts the service .. holy shit dude
-func RestartService(container string) *exec.Cmd {
+func RestartService(container string) (*exec.Cmd, error) {
 	config, _ := utils.LoadConfigToModel(models.ConfigFile())
 	out, err := KillService(container)
 	fmt.Printf("Restarting Service %s", out)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
+
 	cmd := RunService(config.Service[container], container)
-	return cmd
+	return cmd, err
 }
