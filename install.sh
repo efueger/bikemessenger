@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 FILE="/lib/systemd/system/bikemessenger.service"
 
-wget "https://github.com/delivercodes/bikemessenger/releases/download/v0.1.0/bikemessenger"
-chmod +x bikemessenger
-mv bikemessenger /usr/local/bin/bikemessenger
+bikemessengerFile="bikemessenger-linux-amd64"
+curl -sOL "$(jq -r ".assets[] | select(.name | test(\"${bikemessengerFile}\")) | .browser_download_url" < <( curl -s "https://api.github.com/repos/delivercodes/bikemessenger/releases/latest" ))"
+
+chmod +x ${bikemessengerFile}
+mv ${bikemessengerFile} bikemessenger
 
 cat > $FILE <<- EOM
 [Unit]
