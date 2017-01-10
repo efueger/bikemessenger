@@ -6,8 +6,3 @@ services:
         ports:
             - 8660:80
             - 7443:443
-    cherubini_casa:
-        image: docker.cherubini.casa/cherubini_nginx:3
-        ports:
-            - 9000:80
-            - 9443:443
