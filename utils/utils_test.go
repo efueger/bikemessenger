@@ -3,12 +3,11 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/delivercodes/bikemessenger/models"
 	"github.com/delivercodes/bikemessenger/utils"
 )
 
 func TestLoadConfigToModel(t *testing.T) {
-	config, err := utils.LoadConfigToModel(models.ConfigFile())
+	config, err := utils.LoadConfigToModel("../data.yml")
 	if err != nil {
 		t.Error("Error Config didn't load ", err)
 	}
@@ -30,7 +29,7 @@ func TestLoadConfigToJSON(t *testing.T) {
 }
 
 func TestSaveConfigToFile(t *testing.T) {
-	config, _ := utils.LoadConfigToModel(models.ConfigFile())
+	config, _ := utils.LoadConfigToModel("../data.yml")
 	j, err := utils.SaveConfigToFile(config)
 	if err != nil {
 		t.Error("Error File didn't save ", j)
