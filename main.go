@@ -3,22 +3,47 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/delivercodes/bikemessenger/routes"
 	"github.com/delivercodes/bikemessenger/services"
+	"github.com/gorilla/mux"
 )
 
-func main() {
-	http.HandleFunc("/", routes.CheckRoute)
-	http.HandleFunc("/health", routes.HealthRoute)
+//Router dfdfd
+func Router() *mux.Router {
+	r := mux.NewRouter()
+	r.HandleFunc("/", routes.CheckRoute)
+	r.HandleFunc("/health", routes.HealthRoute)
 
 	//Status
-	http.HandleFunc("/restart", routes.RestartRoute)
-	http.HandleFunc("/kill", routes.KillRoute)
+	r.HandleFunc("/restart", routes.RestartRoute)
+	r.HandleFunc("/kill", routes.KillRoute)
 
 	//Config
-	http.HandleFunc("/config", routes.Config)
+	r.HandleFunc("/config", routes.Config)
+	return r
+}
+
+//Server setup for server
+func Server(r *mux.Router) *http.Server {
+	srv := &http.Server{
+		Handler: r,
+		Addr:    "127.0.0.1:4000",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	return srv
+}
+
+func main() {
+
+	r := Router()
+
+	http.Handle("/", r)
 
 	services.PullService()
-	log.Fatal(http.ListenAndServe(":4000", nil))
+	srv := Server(r)
+	log.Fatal(srv.ListenAndServe())
 }
