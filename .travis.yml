@@ -2,7 +2,9 @@ language: go
 go:
 - 1.7.x
 
-script: go build && ls
+install:
+  - "go get -d -v ./..."
+  - "go build -v ./..."
 
 deploy:
   provider: releases
