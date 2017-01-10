@@ -17,6 +17,7 @@ deploy:
   - release/bikemessenger-linux-amd64
   - release/bikemessenger-linux-386
   - release/bikemessenger-linux-arm
+  skip_cleanup: true
   on:
     repo: delivercodes/bikemessenger
     tags: true
