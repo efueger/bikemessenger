@@ -25,12 +25,13 @@ func CheckRoute(w http.ResponseWriter, r *http.Request) {
 func RestartRoute(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("id")
 	if query != "" {
-		cmd, _ := services.RestartService(query)
+		cmd := services.RestartService(query)
 		cmd.Run()
 		out, _ := services.CheckService()
 		fmt.Fprintf(w, "%s", out)
 	} else {
-		services.PullService()
+		config, _ := utils.LoadConfigToModel(models.ConfigFile())
+		services.PullService(config)
 	}
 
 }

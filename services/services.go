@@ -16,7 +16,7 @@ func RunService(service models.Service, name string) *exec.Cmd {
 
 	nameString := "--name=" + name
 	args = append(args, nameString)
-	//
+	fmt.Println(service.Ports)
 	if service.Ports != nil {
 		for _, port := range service.Ports {
 			start := "-p"
@@ -39,8 +39,7 @@ func RunService(service models.Service, name string) *exec.Cmd {
 }
 
 //PullService ...
-func PullService() {
-	config, _ := utils.LoadConfigToModel(models.ConfigFile())
+func PullService(config models.Config) {
 	for k := range config.Service {
 		service := config.Service[k]
 
@@ -50,7 +49,6 @@ func PullService() {
 		KillService(service.Image)
 		RunService(service, k).Start()
 	}
-
 }
 
 //CheckService ...
@@ -73,11 +71,11 @@ func KillService(container string) ([]byte, error) {
 }
 
 //RestartService restarts the service .. holy shit dude
-func RestartService(container string) (*exec.Cmd, error) {
+func RestartService(container string) *exec.Cmd {
 	config, _ := utils.LoadConfigToModel(models.ConfigFile())
-	out, err := KillService(container)
+	out, _ := KillService(container)
 	fmt.Printf("Restarting Service %s", out)
 
 	cmd := RunService(config.Service[container], container)
-	return cmd, err
+	return cmd
 }

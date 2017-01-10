@@ -1,9 +1,14 @@
 package main
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/delivercodes/bikemessenger/utils"
+)
 
 func TestSetup(t *testing.T) {
-	srv := Setup()
+	config, _ := utils.LoadConfigToModel("data.yaml")
+	srv := Setup(config)
 	if srv == nil {
 		t.Fail()
 	}

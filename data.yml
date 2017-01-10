@@ -1,8 +1,15 @@
 services:
-    postgres:
+    alpine:
+        image: alpine
         env:
             - DEBUG=2
-        image: alpine
         ports:
             - 8660:80
             - 7443:443
+    node:
+        image: iron/node
+        env:
+            - DEBUG=1
+        ports:
+            - 9990:80
+            - 8443:443

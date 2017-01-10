@@ -4,10 +4,12 @@ import (
 	"testing"
 
 	"github.com/delivercodes/bikemessenger/services"
+	"github.com/delivercodes/bikemessenger/utils"
 )
 
 func TestPullService(t *testing.T) {
-	services.PullService()
+	config, _ := utils.LoadConfigToModel("../data.yml")
+	services.PullService(config)
 }
 
 func TestCheckService(t *testing.T) {
@@ -15,8 +17,6 @@ func TestCheckService(t *testing.T) {
 }
 
 func TestRestartService(t *testing.T) {
-	_, err := services.RestartService("postgres")
-	if err != nil {
-		t.Fatal("Error restarting service")
-	}
+	cmd := services.RestartService("alpine")
+	cmd.Run()
 }

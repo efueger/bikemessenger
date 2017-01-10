@@ -5,8 +5,10 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/delivercodes/bikemessenger/models"
 	"github.com/delivercodes/bikemessenger/routes"
 	"github.com/delivercodes/bikemessenger/services"
+	"github.com/delivercodes/bikemessenger/utils"
 	"github.com/gorilla/mux"
 )
 
@@ -38,16 +40,16 @@ func Server(r *mux.Router) *http.Server {
 }
 
 //Setup sets server up for logfatal
-func Setup() *http.Server {
+func Setup(config models.Config) *http.Server {
 	r := Router()
 
 	http.Handle("/", r)
-
-	services.PullService()
+	services.PullService(config)
 	srv := Server(r)
 	return srv
 }
 
 func main() {
-	log.Fatal(Setup().ListenAndServe())
+	config, _ := utils.LoadConfigToModel(models.ConfigFile())
+	log.Fatal(Setup(config).ListenAndServe())
 }
