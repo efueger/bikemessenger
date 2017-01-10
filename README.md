@@ -8,4 +8,4 @@ I deliver the codes yo!
 config is loaded from ~/.bikemessenger.yml
 
 # Install using
-curl -Ls https://github.com/delivercodes/bikemessenger/releases/download/v0.1.0/install.sh | sudo -H sh
+curl -Ls https://raw.githubusercontent.com/delivercodes/bikemessenger/master/install.sh | sudo -H sh
