@@ -13,7 +13,7 @@ import (
 //RunService runs the docker image and outputs the cmd
 func RunService(service models.Service, name string) *exec.Cmd {
 	image := service.Image
-	args := []string{"run"}
+	args := []string{"run", "-d"}
 	KillService(image)
 
 	nameString := "--name=" + name
