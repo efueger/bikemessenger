@@ -2,7 +2,7 @@ services:
     postgres:
         env:
             - DEBUG=2
-        image: postgres
+        image: alpine
         ports:
             - 8660:80
             - 7443:443
