@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"os"
@@ -13,11 +14,37 @@ import (
 //RunService runs the docker image and outputs the cmd
 func RunService(service models.Service, name string) *exec.Cmd {
 	image := service.Image
+	var ports bytes.Buffer
+	var envs bytes.Buffer
 	KillService(image)
 
 	nameString := "--name=" + name
-	args := []string{"run", "-d", nameString, image}
+	args := []string{"run", nameString}
 
+	if service.Ports != nil {
+		for i, port := range service.Ports {
+			start := "-e \""
+			if i > 0 {
+				start = " -e \""
+			}
+			ports.WriteString(start + port + "\"")
+		}
+		args = append(args, ports.String())
+	}
+
+	if service.Env != nil {
+		for i, env := range service.Env {
+			start := "-e \""
+			if i > 0 {
+				start = " -e \""
+			}
+			envs.WriteString(start + env + "\"")
+		}
+		args = append(args, envs.String())
+	}
+
+	args = append(args, image)
+	fmt.Println(args)
 	cmd := exec.Command("docker", args...)
 	return cmd
 }
