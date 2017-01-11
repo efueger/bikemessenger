@@ -9,6 +9,7 @@ before_install:
     - go get -d -v ./...
 script:
     - $HOME/gopath/bin/goveralls -service=travis-ci
+before_deploy:
     - make
 deploy:
     skip_cleanup: true
@@ -22,3 +23,4 @@ deploy:
     on:
         repo: delivercodes/bikemessenger
         tags: true
+        all_branches: true
