@@ -1,8 +1,16 @@
 language: go
+sudo: required
+services:
+    - docker
 go:
-    - 1.7.x
-install:
+    - 1.7.4
+before_install:
+    - go get github.com/mattn/goveralls
     - go get -d -v ./...
+script:
+    - $HOME/gopath/bin/goveralls -service=travis-ci
+    - make
+
 deploy:
     skip_cleanup: true
     provider: releases
