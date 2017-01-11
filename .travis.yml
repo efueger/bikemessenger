@@ -10,7 +10,6 @@ before_install:
 script:
     - $HOME/gopath/bin/goveralls -service=travis-ci
     - make
-
 deploy:
     skip_cleanup: true
     provider: releases
@@ -22,3 +21,4 @@ deploy:
         - release/bikemessenger-linux-arm
     on:
         repo: delivercodes/bikemessenger
+        tags: true
