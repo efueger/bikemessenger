@@ -3,6 +3,8 @@ sudo: required
 services:
     - docker
 go:
+    - 1.5
+    - 1.7.4
     - tip
 before_install:
     - go get github.com/mattn/goveralls
