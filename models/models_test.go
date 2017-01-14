@@ -40,7 +40,7 @@ func TestConfig(t *testing.T) {
 
 func TestConfigFile(t *testing.T) {
 	config := models.ConfigFile()
-	if !strings.Contains(config, "/.bikemessenger.yml") {
+	if !strings.Contains(config, "/bikemessenger.yml") {
 		t.Errorf("Config Model File Location Error ", config)
 	}
 }

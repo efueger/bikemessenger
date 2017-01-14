@@ -23,5 +23,9 @@ ExecStart=/usr/local/bin/bikemessenger
 WantedBy=default.target
 EOM
 
+sudo mkdir /etc/bikemessenger
+sudo touch /etc/bikemessenger/bikemessenger.yml
+sudo chmod 777 /etc/bikemessenger/bikemessenger.yml
+
 sudo systemctl daemon-reload
 sudo systemctl start bikemessenger.service

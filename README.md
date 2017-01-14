@@ -4,7 +4,7 @@ I deliver the codes yo!
 
 420 Smoke Containers everyday
 
-config is loaded from ~/.bikemessenger.yml
+config is loaded from /etc/bikemessenger/bikemessenger.yml
 
 # Install using
 ```sh

@@ -1,9 +1,6 @@
 package models
 
-import (
-	"fmt"
-	"os/user"
-)
+import "fmt"
 
 //Config struct is the object that comes from the yaml file
 type Config struct {
@@ -19,7 +16,5 @@ type Service struct {
 
 //ConfigFile ..fdsfd
 func ConfigFile() string {
-	usr, _ := user.Current()
-	dir := usr.HomeDir
-	return fmt.Sprintf(dir + "/.bikemessenger.yml")
+	return fmt.Sprintf("/etc/bikemessenger/bikemessenger.yml")
 }
