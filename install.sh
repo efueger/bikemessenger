@@ -6,7 +6,7 @@ curl -s https://api.github.com/repos/delivercodes/bikemessenger/releases | grep 
 
 
 chmod +x ${bikemessengerFile}
-mv ${bikemessengerFile} bikemessenger
+mv ${bikemessengerFile} /usr/local/bin/bikemessenger
 
 cat > $FILE <<- EOM
 [Unit]
