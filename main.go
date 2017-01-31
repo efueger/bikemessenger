@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 	"time"
@@ -49,7 +50,16 @@ func Setup(config models.Config) *http.Server {
 	return srv
 }
 
+//Config this gets the config file from flag
+// accepts --config flag
+func Config() models.Config {
+	var configFile string
+	flag.StringVar(&configFile, "config", models.ConfigFile(), "a string var")
+	flag.Parse()
+	config, _ := utils.LoadConfigToModel(configFile)
+	return config
+}
+
 func main() {
-	config, _ := utils.LoadConfigToModel(models.ConfigFile())
-	log.Fatal(Setup(config).ListenAndServe())
+	log.Fatal(Setup(Config()).ListenAndServe())
 }

@@ -15,12 +15,13 @@ Requires=docker.service
 After=docker.service
 
 [Service]
+Type=simple
 PIDFile=/tmp/bikemessenger.pid-4040
 Restart=always
-ExecStart=/usr/local/bin/bikemessenger
+ExecStart=/usr/local/bin/bikemessenger -config=/etc/bikemessenger/bikemessenger.yml
 
 [Install]
-WantedBy=default.target
+WantedBy=multiuser.target
 EOM
 
 sudo mkdir /etc/bikemessenger

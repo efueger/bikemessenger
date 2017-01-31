@@ -14,6 +14,13 @@ func TestSetup(t *testing.T) {
 	}
 }
 
+func TestConfig(t *testing.T) {
+	config := Config()
+	if config.Service != nil {
+		t.Fail()
+	}
+}
+
 // func TestMain(m *testing.M) {
 // 	m.Run()
 // }
