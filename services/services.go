@@ -72,7 +72,7 @@ func KillService(container string) ([]byte, error) {
 
 //RestartService restarts the service .. holy shit dude
 func RestartService(container string) *exec.Cmd {
-	config, _ := utils.LoadConfigToModel(models.ConfigFile())
+	config, _ := utils.LoadConfigToModel(models.ConfigFile)
 	out, _ := KillService(container)
 	fmt.Printf("Restarting Service %s", out)
 

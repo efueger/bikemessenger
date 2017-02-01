@@ -30,8 +30,9 @@ func RestartRoute(w http.ResponseWriter, r *http.Request) {
 		out, _ := services.CheckService()
 		fmt.Fprintf(w, "%s", out)
 	} else {
-		config, _ := utils.LoadConfigToModel(models.ConfigFile())
+		config, _ := utils.LoadConfigToModel(models.ConfigFile)
 		services.PullService(config)
+		fmt.Fprintf(w, "ok")
 	}
 
 }
@@ -52,7 +53,7 @@ func Config(w http.ResponseWriter, r *http.Request) {
 }
 
 func getConfig(w http.ResponseWriter, r *http.Request) {
-	json, _ := utils.LoadConfigToJSON(models.ConfigFile())
+	json, _ := utils.LoadConfigToJSON(models.ConfigFile)
 	fmt.Fprintf(w, "%s", json)
 }
 
@@ -65,6 +66,7 @@ func postConfig(w http.ResponseWriter, r *http.Request) {
 
 		defer r.Body.Close()
 		json, _ := utils.SaveConfigToFile(config)
+		services.PullService(config)
 		fmt.Fprintf(w, "%s", json)
 	}
 

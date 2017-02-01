@@ -20,7 +20,3 @@ func TestConfig(t *testing.T) {
 		t.Fail()
 	}
 }
-
-// func TestMain(m *testing.M) {
-// 	m.Run()
-// }

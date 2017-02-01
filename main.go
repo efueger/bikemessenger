@@ -54,8 +54,9 @@ func Setup(config models.Config) *http.Server {
 // accepts --config flag
 func Config() models.Config {
 	var configFile string
-	flag.StringVar(&configFile, "config", models.ConfigFile(), "a string var")
+	flag.StringVar(&configFile, "config", "/etc/bikemessenger/bikemessenger.yml", "a string var")
 	flag.Parse()
+	models.ConfigFile = configFile
 	config, _ := utils.LoadConfigToModel(configFile)
 	return config
 }

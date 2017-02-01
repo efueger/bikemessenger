@@ -30,7 +30,7 @@ func LoadConfigToJSON(file string) ([]byte, error) {
 func SaveConfigToFile(config models.Config) ([]byte, error) {
 	y, err := yaml.Marshal(config)
 
-	ioutil.WriteFile(models.ConfigFile(), y, 0644)
+	ioutil.WriteFile(models.ConfigFile, y, 0644)
 	j, _ := yaml.YAMLToJSON(y)
 	return j, err
 }
